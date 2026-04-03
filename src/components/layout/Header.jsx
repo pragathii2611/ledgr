@@ -13,13 +13,13 @@ export default function Header() {
   const { title, subtitle } = pageTitles[activePage] || pageTitles.dashboard;
 
   return (
-    <header className="h-16 px-6 md:px-8 flex items-center justify-between border-b border-[#F0F0F0] dark:border-[#27272A] bg-white dark:bg-[#18181B] shrink-0">
+    <header className="h-20 px-8 md:px-10 flex items-center justify-between border-b border-[#F0F0F0] dark:border-[#27272A] bg-white dark:bg-[#18181B] shrink-0">
       {/* page title */}
       <div>
-        <h1 className="text-sm font-semibold text-[#0A0A0A] dark:text-[#FAFAFA] tracking-tight">
+        <h1 className="text-base font-semibold text-[#0A0A0A] dark:text-[#FAFAFA] tracking-tight">
           {title}
         </h1>
-        <p className="text-xs text-[#9CA3AF] dark:text-[#52525B] mt-0.5">
+        <p className="text-sm text-[#9CA3AF] dark:text-[#52525B] mt-0.5">
           {subtitle}
         </p>
       </div>
