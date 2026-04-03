@@ -1,9 +1,15 @@
-import { useEffect, useRef, useState } from "react";
-import { TrendingUp, TrendingDown, Wallet, ArrowDownCircle, ArrowUpCircle, PiggyBank } from "lucide-react";
-import { formatCompact, formatCurrency } from "../../utils/formatters";
+import { useEffect, useState } from "react";
+import {
+  TrendingUp,
+  TrendingDown,
+  Wallet,
+  ArrowDownCircle,
+  ArrowUpCircle,
+  PiggyBank,
+} from "lucide-react";
+import { formatCurrency } from "../../utils/formatters";
 import { KPICardSkeleton } from "../ui/Skeleton";
 
-// animates number counting up from 0
 function useCountUp(target, duration = 800, isLoading = false) {
   const [value, setValue] = useState(0);
 
@@ -28,49 +34,43 @@ function useCountUp(target, duration = 800, isLoading = false) {
 
 function KPICard({ label, value, sub, icon: Icon, trend, trendValue, color, isLoading, prefix = "₹" }) {
   const animated = useCountUp(value, 800, isLoading);
-
   if (isLoading) return <KPICardSkeleton />;
-
   const isPositive = trend === "up";
 
   return (
-    <div className="bg-white dark:bg-[#18181B] border border-[#F0F0F0] dark:border-[#27272A] rounded-card shadow-card p-5 flex flex-col gap-4 hover:shadow-md transition-shadow duration-200">
+    <div className="bg-white dark:bg-[#18181B] border border-[#F0F0F0] dark:border-[#27272A] rounded-card shadow-card p-6 flex flex-col gap-5 hover:shadow-md transition-shadow duration-200">
       {/* top row */}
       <div className="flex items-center justify-between">
-        <span className="text-xs text-[#9CA3AF] dark:text-[#52525B] font-medium uppercase tracking-widest">
+        <span className="text-sm text-[#9CA3AF] dark:text-[#52525B] font-medium uppercase tracking-widest">
           {label}
         </span>
         <div
-          className="w-8 h-8 rounded-lg flex items-center justify-center"
+          className="w-10 h-10 rounded-xl flex items-center justify-center"
           style={{ backgroundColor: `${color}15` }}
         >
-          <Icon size={15} style={{ color }} />
+          <Icon size={18} style={{ color }} />
         </div>
       </div>
 
       {/* value */}
       <div>
-        <p className="text-2xl font-semibold text-[#0A0A0A] dark:text-[#FAFAFA] tracking-tight font-mono">
+        <p className="text-4xl font-semibold text-[#0A0A0A] dark:text-[#FAFAFA] tracking-tight font-mono">
           {prefix}{animated.toLocaleString("en-IN")}
         </p>
-        <p className="text-xs text-[#9CA3AF] dark:text-[#52525B] mt-1">
+        <p className="text-sm text-[#9CA3AF] dark:text-[#52525B] mt-2">
           {sub}
         </p>
       </div>
 
       {/* trend */}
       {trendValue !== undefined && (
-        <div className="flex items-center gap-1.5">
+        <div className="flex items-center gap-2">
           {isPositive ? (
-            <TrendingUp size={12} className="text-[#16A34A]" />
+            <TrendingUp size={14} className="text-[#16A34A]" />
           ) : (
-            <TrendingDown size={12} className="text-[#DC2626]" />
+            <TrendingDown size={14} className="text-[#DC2626]" />
           )}
-          <span
-            className={`text-xs font-medium ${
-              isPositive ? "text-[#16A34A]" : "text-[#DC2626]"
-            }`}
-          >
+          <span className={`text-sm font-medium ${isPositive ? "text-[#16A34A]" : "text-[#DC2626]"}`}>
             {isPositive ? "+" : ""}{trendValue}% vs last month
           </span>
         </div>
@@ -132,7 +132,7 @@ export default function KPICards({ transactions, isLoading }) {
   ];
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
       {cards.map((card) => (
         <KPICard key={card.label} {...card} isLoading={isLoading} />
       ))}

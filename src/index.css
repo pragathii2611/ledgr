@@ -24,3 +24,18 @@
     scrollbar-width: none;
   }
 }
+
+@layer base {
+  * {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  html {
+    font-size: 16px;
+  }
+
+  body {
+    @apply bg-[#FAFAFA] text-[#0A0A0A] font-sans;
+  }
+}
