@@ -1,9 +1,9 @@
 import { useAppStore } from "./store/appStore";
 import Layout from "./components/layout/Layout";
-import Dashboard from "./pages/Dashboard";
-import Transactions from "./pages/Transactions";
-import Insights from "./pages/Insights";
-import Settings from "./pages/Settings";
+import Dashboard from "./pages/Dashboard.jsx";
+import Transactions from "./pages/Transactions.jsx";
+import Insights from "./pages/Insights.jsx";
+import Settings from "./pages/Settings.jsx";
 
 const pages = {
   dashboard: Dashboard,
