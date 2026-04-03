@@ -12,14 +12,14 @@ export default {
         mono: ['Geist Mono', 'monospace'],
       },
       colors: {
-        brand: '#18181B',
+        brand: '#4F46E5',
       },
       boxShadow: {
         card: '0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.06)',
         modal: '0 20px 60px rgba(0,0,0,0.12)',
       },
       borderRadius: {
-        card: '12px',
+        card: '14px',
       }
     },
   },

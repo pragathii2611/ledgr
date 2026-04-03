@@ -8,10 +8,19 @@
   * {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    outline: none;
+  }
+
+  html {
+    font-size: 16px;
   }
 
   body {
-    @apply bg-[#FAFAFA] text-[#0A0A0A] font-sans;
+    @apply bg-[#F7F6F3] text-[#1A1A18] font-sans;
+  }
+
+  .dark body {
+    @apply bg-[#1C1C1A] text-[#F0EFEC];
   }
 }
 
@@ -22,21 +31,5 @@
   .no-scrollbar {
     -ms-overflow-style: none;
     scrollbar-width: none;
-  }
-}
-
-@layer base {
-  * {
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    outline: none;
-  }
-
-  html {
-    font-size: 16px;
-  }
-
-  body {
-    @apply bg-[#FAFAFA] text-[#0A0A0A] font-sans;
   }
 }

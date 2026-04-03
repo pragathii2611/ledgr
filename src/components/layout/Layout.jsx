@@ -1,20 +1,12 @@
-import { useAppStore } from "../../store/appStore";
 import Sidebar from "./Sidebar";
 import Header from "./Header";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function Layout({ children }) {
-  const { isSidebarOpen } = useAppStore();
-
   return (
-    <div className="flex h-screen bg-[#FAFAFA] dark:bg-[#09090B] overflow-hidden">
-      {/* sidebar */}
+    <div className="flex h-screen bg-[#F7F6F3] dark:bg-[#1C1C1A] overflow-hidden">
       <Sidebar />
-
-      {/* main content */}
-      <div
-        className={`flex flex-col flex-1 min-w-0 transition-all duration-300`}
-      >
+      <div className="flex flex-col flex-1 min-w-0">
         <Header />
         <main className="flex-1 overflow-y-auto no-scrollbar">
           <AnimatePresence mode="wait">
@@ -24,7 +16,7 @@ export default function Layout({ children }) {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -8 }}
               transition={{ duration: 0.2, ease: "easeOut" }}
-              className="p-6 md:p-8 max-w-7xl mx-auto w-full"
+              className="p-8 max-w-7xl mx-auto w-full"
             >
               {children}
             </motion.div>
