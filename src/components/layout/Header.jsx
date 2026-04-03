@@ -1,5 +1,5 @@
 import { useAppStore } from "../../store/appStore";
-import { Sun, Moon, Bell } from "lucide-react";
+import { Sun, Moon, Bell, Shield, Eye } from "lucide-react";
 
 const pageTitles = {
   dashboard: { title: "Dashboard", subtitle: "Welcome back, Pragathi" },
@@ -9,7 +9,7 @@ const pageTitles = {
 };
 
 export default function Header() {
-  const { activePage, isDarkMode, toggleDarkMode, role } = useAppStore();
+  const { activePage, isDarkMode, toggleDarkMode, role, setRole } = useAppStore();
   const { title, subtitle } = pageTitles[activePage] || pageTitles.dashboard;
 
   return (
@@ -25,31 +25,49 @@ export default function Header() {
       </div>
 
       {/* right side */}
-      <div className="flex items-center gap-2">
-        {/* role badge */}
-        <span
-          className={`text-[10px] font-medium px-2.5 py-1 rounded-full border tracking-wide uppercase
-          ${
-            role === "admin"
-              ? "bg-[#F0FDF4] border-[#BBF7D0] text-[#16A34A] dark:bg-[#052e16] dark:border-[#166534] dark:text-[#4ade80]"
-              : "bg-[#FFF7ED] border-[#FED7AA] text-[#D97706] dark:bg-[#2d1a06] dark:border-[#92400e] dark:text-[#fbbf24]"
-          }`}
-        >
-          {role}
-        </span>
+      <div className="flex items-center gap-3">
+
+        {/* role switcher */}
+        <div className="flex rounded-xl border border-[#F0F0F0] dark:border-[#27272A] overflow-hidden">
+          <button
+            onClick={() => setRole("admin")}
+            className={`flex items-center gap-2 px-4 py-2 text-sm font-medium transition-all duration-150
+              ${
+                role === "admin"
+                  ? "bg-[#18181B] dark:bg-[#FAFAFA] text-white dark:text-[#18181B]"
+                  : "text-[#6B7280] hover:bg-[#F4F4F5] dark:hover:bg-[#27272A]"
+              }`}
+          >
+            <Shield size={14} />
+            Admin
+          </button>
+          <button
+            onClick={() => setRole("viewer")}
+            className={`flex items-center gap-2 px-4 py-2 text-sm font-medium transition-all duration-150
+              ${
+                role === "viewer"
+                  ? "bg-[#18181B] dark:bg-[#FAFAFA] text-white dark:text-[#18181B]"
+                  : "text-[#6B7280] hover:bg-[#F4F4F5] dark:hover:bg-[#27272A]"
+              }`}
+          >
+            <Eye size={14} />
+            Viewer
+          </button>
+        </div>
 
         {/* dark mode toggle */}
         <button
           onClick={toggleDarkMode}
-          className="w-8 h-8 flex items-center justify-center rounded-lg text-[#6B7280] hover:text-[#0A0A0A] dark:hover:text-[#FAFAFA] hover:bg-[#F4F4F5] dark:hover:bg-[#27272A] transition-all duration-100"
+          className="w-10 h-10 flex items-center justify-center rounded-xl text-[#6B7280] hover:text-[#0A0A0A] dark:hover:text-[#FAFAFA] hover:bg-[#F4F4F5] dark:hover:bg-[#27272A] transition-all duration-100"
         >
-          {isDarkMode ? <Sun size={15} /> : <Moon size={15} />}
+          {isDarkMode ? <Sun size={17} /> : <Moon size={17} />}
         </button>
 
-        {/* notification bell — decorative for now */}
-        <button className="w-8 h-8 flex items-center justify-center rounded-lg text-[#6B7280] hover:text-[#0A0A0A] dark:hover:text-[#FAFAFA] hover:bg-[#F4F4F5] dark:hover:bg-[#27272A] transition-all duration-100">
-          <Bell size={15} />
+        {/* notification bell */}
+        <button className="w-10 h-10 flex items-center justify-center rounded-xl text-[#6B7280] hover:text-[#0A0A0A] dark:hover:text-[#FAFAFA] hover:bg-[#F4F4F5] dark:hover:bg-[#27272A] transition-all duration-100">
+          <Bell size={17} />
         </button>
+
       </div>
     </header>
   );

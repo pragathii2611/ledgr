@@ -3,14 +3,14 @@ import { useAppStore } from "../store/appStore";
 import { useTransactionStore } from "../store/transactionStore";
 import { user } from "../data/mockData";
 import {
-  User,
   Shield,
   Eye,
   Moon,
   Sun,
   Trash2,
-  Info,
-  Wallet,
+  Pencil,
+  Check,
+  X,
 } from "lucide-react";
 import toast from "react-hot-toast";
 
@@ -48,9 +48,86 @@ function Row({ label, sub, children }) {
   );
 }
 
+function EditableRow({ label, sub, value, onSave }) {
+  const [editing, setEditing] = useState(false);
+  const [val, setVal] = useState(value);
+
+  const handleSave = () => {
+    if (!val.trim()) {
+      toast.error("Field cannot be empty.");
+      return;
+    }
+    onSave(val.trim());
+    setEditing(false);
+    toast.success(`${label} updated.`);
+  };
+
+  const handleCancel = () => {
+    setVal(value);
+    setEditing(false);
+  };
+
+  return (
+    <div className="flex items-center justify-between px-6 py-5">
+      <div>
+        <p className="text-sm font-medium text-[#0A0A0A] dark:text-[#FAFAFA]">
+          {label}
+        </p>
+        {sub && <p className="text-sm text-[#9CA3AF] mt-0.5">{sub}</p>}
+      </div>
+      <div className="ml-6 shrink-0">
+        {editing ? (
+          <div className="flex items-center gap-2">
+            <input
+              value={val}
+              onChange={(e) => setVal(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") handleSave();
+                if (e.key === "Escape") handleCancel();
+              }}
+              autoFocus
+              className="w-44 px-3 py-2 text-sm bg-[#FAFAFA] dark:bg-[#09090B] border border-[#F0F0F0] dark:border-[#27272A] rounded-xl text-[#0A0A0A] dark:text-[#FAFAFA] focus:outline-none focus:ring-2 focus:ring-[#18181B] dark:focus:ring-[#FAFAFA]"
+            />
+            <button
+              onClick={handleSave}
+              className="w-8 h-8 flex items-center justify-center rounded-lg bg-[#18181B] dark:bg-[#FAFAFA] text-white dark:text-[#18181B] hover:opacity-90 transition-opacity"
+            >
+              <Check size={14} />
+            </button>
+            <button
+              onClick={handleCancel}
+              className="w-8 h-8 flex items-center justify-center rounded-lg text-[#6B7280] hover:bg-[#F4F4F5] dark:hover:bg-[#27272A] transition-all"
+            >
+              <X size={14} />
+            </button>
+          </div>
+        ) : (
+          <div className="flex items-center gap-3">
+            <span className="text-sm text-[#6B7280] dark:text-[#A1A1AA]">
+              {value}
+            </span>
+            <button
+              onClick={() => setEditing(true)}
+              className="w-8 h-8 flex items-center justify-center rounded-lg text-[#9CA3AF] hover:text-[#0A0A0A] dark:hover:text-[#FAFAFA] hover:bg-[#F4F4F5] dark:hover:bg-[#27272A] transition-all"
+            >
+              <Pencil size={14} />
+            </button>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
 export default function Settings() {
   const { role, setRole, isDarkMode, toggleDarkMode } = useAppStore();
   const { transactions, fetchTransactions } = useTransactionStore();
+
+  const [profile, setProfile] = useState({
+    name: user.name,
+    email: user.email,
+  });
+
   const [budget, setBudget] = useState(user.monthlyBudget);
   const [editingBudget, setEditingBudget] = useState(false);
 
@@ -68,11 +145,7 @@ export default function Settings() {
 
   const budgetPct = Math.min((spent / budget) * 100, 100).toFixed(0);
   const budgetColor =
-    budgetPct >= 90
-      ? "#DC2626"
-      : budgetPct >= 70
-      ? "#D97706"
-      : "#16A34A";
+    budgetPct >= 90 ? "#DC2626" : budgetPct >= 70 ? "#D97706" : "#16A34A";
 
   const handleResetData = async () => {
     if (!window.confirm("This will reset all transactions to the original mock data. Continue?")) return;
@@ -86,26 +159,40 @@ export default function Settings() {
     toast.success("Monthly budget updated.");
   };
 
+  const avatar = profile.name
+    .split(" ")
+    .map((n) => n[0])
+    .join("")
+    .toUpperCase()
+    .slice(0, 2);
+
   return (
     <div className="space-y-5 max-w-2xl">
 
       {/* profile */}
       <Section title="Profile" subtitle="Your account information">
-        <Row label="Name" sub="Display name across Ledgr">
-          <span className="text-sm font-medium text-[#0A0A0A] dark:text-[#FAFAFA]">
-            {user.name}
-          </span>
-        </Row>
-        <Row label="Email" sub="Associated account email">
-          <span className="text-sm text-[#6B7280]">{user.email}</span>
-        </Row>
-        <Row label="Avatar" sub="Your initials">
-          <div className="w-9 h-9 rounded-full bg-[#F4F4F5] dark:bg-[#27272A] flex items-center justify-center">
+        {/* avatar */}
+        <Row label="Avatar" sub="Generated from your name">
+          <div className="w-10 h-10 rounded-full bg-[#F4F4F5] dark:bg-[#27272A] flex items-center justify-center">
             <span className="text-sm font-semibold text-[#0A0A0A] dark:text-[#FAFAFA]">
-              {user.avatar}
+              {avatar}
             </span>
           </div>
         </Row>
+
+        <EditableRow
+          label="Name"
+          sub="Display name across Ledgr"
+          value={profile.name}
+          onSave={(val) => setProfile((p) => ({ ...p, name: val }))}
+        />
+
+        <EditableRow
+          label="Email"
+          sub="Associated account email"
+          value={profile.email}
+          onSave={(val) => setProfile((p) => ({ ...p, email: val }))}
+        />
       </Section>
 
       {/* role */}
@@ -208,14 +295,10 @@ export default function Settings() {
           )}
         </Row>
 
-        {/* progress bar */}
         <div className="px-6 py-5">
           <div className="flex items-center justify-between mb-2">
             <span className="text-sm text-[#9CA3AF]">Budget used</span>
-            <span
-              className="text-sm font-semibold"
-              style={{ color: budgetColor }}
-            >
+            <span className="text-sm font-semibold" style={{ color: budgetColor }}>
               {budgetPct}%
             </span>
           </div>
