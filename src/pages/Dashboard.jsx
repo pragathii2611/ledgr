@@ -1,3 +1,20 @@
+import { useEffect } from "react";
+import { useTransactionStore } from "../store/transactionStore";
+import KPICards from "../components/dashboard/KPICards";
+
 export default function Dashboard() {
-  return <div className="text-[#0A0A0A] dark:text-[#FAFAFA]">Dashboard</div>;
+  const { transactions, isLoading, fetchTransactions } = useTransactionStore();
+
+  useEffect(() => {
+    if (transactions.length === 0) {
+      fetchTransactions();
+    }
+  }, []);
+
+  return (
+    <div className="space-y-6">
+      {/* KPI Cards */}
+      <KPICards transactions={transactions} isLoading={isLoading} />
+    </div>
+  );
 }
