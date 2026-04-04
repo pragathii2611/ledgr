@@ -1,9 +1,10 @@
 import { useAppStore } from "./store/appStore";
 import Layout from "./components/layout/Layout";
-import Dashboard from "./pages/Dashboard.jsx";
-import Transactions from "./pages/Transactions.jsx";
-import Insights from "./pages/Insights.jsx";
-import Settings from "./pages/Settings.jsx";
+import Dashboard from "./pages/Dashboard";
+import Transactions from "./pages/Transactions";
+import Insights from "./pages/Insights";
+import Settings from "./pages/Settings";
+import FinancialAssistant from "./components/chat/FinancialAssistant";
 
 const pages = {
   dashboard: Dashboard,
@@ -17,8 +18,11 @@ export default function App() {
   const Page = pages[activePage] || Dashboard;
 
   return (
-    <Layout>
-      <Page />
-    </Layout>
+    <>
+      <Layout>
+        <Page />
+      </Layout>
+      <FinancialAssistant />
+    </>
   );
 }
