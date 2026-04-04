@@ -4,11 +4,9 @@ import { persist } from "zustand/middleware";
 export const useAppStore = create(
   persist(
     (set) => ({
-      // role
       role: "admin",
       setRole: (role) => set({ role }),
 
-      // theme
       isDarkMode: false,
       toggleDarkMode: () =>
         set((state) => {
@@ -21,11 +19,9 @@ export const useAppStore = create(
           return { isDarkMode: next };
         }),
 
-      // active page
       activePage: "dashboard",
       setActivePage: (page) => set({ activePage: page }),
 
-      // sidebar
       isSidebarOpen: true,
       toggleSidebar: () =>
         set((state) => ({ isSidebarOpen: !state.isSidebarOpen })),
@@ -33,7 +29,6 @@ export const useAppStore = create(
     {
       name: "ledgr-app",
       onRehydrateStorage: () => (state) => {
-        // reapply dark mode class on page reload
         if (state?.isDarkMode) {
           document.documentElement.classList.add("dark");
         }

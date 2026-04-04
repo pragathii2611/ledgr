@@ -240,45 +240,54 @@ export default function Insights() {
           </div>
 
           {monthly.map((m) => {
-            const saved = m.income - m.expenses;
-            const rate = m.income > 0 ? ((saved / m.income) * 100).toFixed(1) : 0;
-            const isPositive = saved >= 0;
-            return (
-              <div
-                key={m.month}
-                className="bg-white dark:bg-[#242422] border border-[#EBEBE8] dark:border-[#2E2E2C] rounded-card shadow-card p-5"
-              >
-                <div className="flex items-center justify-between mb-3">
-                  <p className="text-sm font-semibold text-[#1A1A18] dark:text-[#F0EFEC]">
-                    {m.month}
-                  </p>
-                  <div className="flex items-center gap-1">
-                    {isPositive
-                      ? <TrendingUp size={14} className="text-[#16A34A]" />
-                      : <TrendingDown size={14} className="text-[#DC2626]" />
-                    }
-                    <span className={`text-sm font-medium ${isPositive ? "text-[#16A34A]" : "text-[#DC2626]"}`}>
-                      {rate}% saved
-                    </span>
-                  </div>
-                </div>
-                <div className="grid grid-cols-2 gap-3">
-                  <div>
-                    <p className="text-xs text-[#A8A8A5] mb-1">Income</p>
-                    <p className="text-sm font-semibold font-mono text-[#16A34A]">
-                      {formatCurrency(m.income)}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-xs text-[#A8A8A5] mb-1">Expenses</p>
-                    <p className="text-sm font-semibold font-mono text-[#DC2626]">
-                      {formatCurrency(m.expenses)}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
+  const saved = m.income - m.expenses;
+  const rate = m.income > 0 ? ((saved / m.income) * 100).toFixed(1) : 0;
+  const isPositive = saved >= 0;
+  const hasData = m.income > 0 || m.expenses > 0;
+  return (
+    <div
+      key={m.month}
+      className="bg-white dark:bg-[#242422] border border-[#EBEBE8] dark:border-[#2E2E2C] rounded-card shadow-card p-5"
+    >
+      <div className="flex items-center justify-between mb-3">
+        <p className="text-sm font-semibold text-[#1A1A18] dark:text-[#F0EFEC]">
+          {m.month}
+        </p>
+        {hasData ? (
+          <div className="flex items-center gap-1">
+            {isPositive
+              ? <TrendingUp size={14} className="text-[#16A34A]" />
+              : <TrendingDown size={14} className="text-[#DC2626]" />
+            }
+            <span className={`text-sm font-medium ${isPositive ? "text-[#16A34A]" : "text-[#DC2626]"}`}>
+              {rate}% saved
+            </span>
+          </div>
+        ) : (
+          <span className="text-xs text-[#A8A8A5]">Insufficient data</span>
+        )}
+      </div>
+      {hasData ? (
+        <div className="grid grid-cols-2 gap-3">
+          <div>
+            <p className="text-xs text-[#A8A8A5] mb-1">Income</p>
+            <p className="text-sm font-semibold font-mono text-[#16A34A]">
+              {formatCurrency(m.income)}
+            </p>
+          </div>
+          <div>
+            <p className="text-xs text-[#A8A8A5] mb-1">Expenses</p>
+            <p className="text-sm font-semibold font-mono text-[#DC2626]">
+              {formatCurrency(m.expenses)}
+            </p>
+          </div>
+        </div>
+      ) : (
+        <p className="text-xs text-[#A8A8A5]">No transactions this month yet.</p>
+      )}
+    </div>
+  );
+})}
         </div>
       </div>
     </div>

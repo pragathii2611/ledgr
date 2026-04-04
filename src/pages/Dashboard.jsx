@@ -15,18 +15,21 @@ export default function Dashboard() {
 
   return (
     <div className="space-y-6">
+      {/* KPI Cards */}
       <KPICards transactions={transactions} isLoading={isLoading} />
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2">
-          <TrendChart transactions={transactions} isLoading={isLoading} />
-        </div>
-        <div className="lg:col-span-1 space-y-6">
+      {/* Trend Chart — full width */}
+      <TrendChart transactions={transactions} isLoading={isLoading} />
+
+      {/* Health Score + Category — side by side */}
+      {transactions.length > 0 && (
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <HealthScore transactions={transactions} isLoading={isLoading} />
           <CategoryChart transactions={transactions} isLoading={isLoading} />
         </div>
-      </div>
+      )}
 
+      {/* Recent Transactions */}
       <RecentTransactions transactions={transactions} isLoading={isLoading} />
     </div>
   );
