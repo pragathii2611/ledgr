@@ -19,9 +19,28 @@ const navItems = [
   { id: "settings", label: "Settings", icon: Settings },
 ];
 
+function LedgrIcon({ size = 32 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="32" height="32" rx="7" fill="#1E1B4B"/>
+      <rect x="7" y="7" width="4" height="14" rx="2" fill="#6366F1"/>
+      <rect x="7" y="17" width="10" height="4" rx="2" fill="#6366F1"/>
+      <rect x="11" y="10" width="4" height="14" rx="2" fill="white"/>
+      <rect x="11" y="20" width="10" height="4" rx="2" fill="white"/>
+      <rect x="11" y="17" width="4" height="3" fill="#A5B4FC"/>
+    </svg>
+  );
+}
+
 export default function Sidebar() {
-  const { activePage, setActivePage, role, setRole, isSidebarOpen, toggleSidebar } =
-    useAppStore();
+  const {
+    activePage,
+    setActivePage,
+    role,
+    setRole,
+    isSidebarOpen,
+    toggleSidebar,
+  } = useAppStore();
 
   return (
     <motion.aside
@@ -40,26 +59,35 @@ export default function Sidebar() {
               transition={{ duration: 0.15 }}
               className="flex items-center gap-3"
             >
-              <div className="w-8 h-8 bg-[#4F46E5] rounded-lg flex items-center justify-center shrink-0">
-                <span className="text-white text-sm font-semibold">L</span>
+              <LedgrIcon size={32} />
+              <div>
+                <span
+                  className="text-[#1A1A18] dark:text-[#F0EFEC] font-bold text-base tracking-[0.15em]"
+                  style={{ fontFamily: "'Courier New', monospace" }}
+                >
+                  LEDGR
+                </span>
+                <p
+                  className="text-[9px] tracking-[0.2em] text-[#6366F1]"
+                  style={{ fontFamily: "'Courier New', monospace" }}
+                >
+                  YOUR FINANCES, CLEARLY.
+                </p>
               </div>
-              <span className="text-[#1A1A18] dark:text-[#F0EFEC] font-semibold text-lg tracking-tight">
-                Ledgr
-              </span>
             </motion.div>
           )}
         </AnimatePresence>
 
         {!isSidebarOpen && (
-          <div className="w-8 h-8 bg-[#4F46E5] rounded-lg flex items-center justify-center mx-auto">
-            <span className="text-white text-sm font-semibold">L</span>
+          <div className="mx-auto">
+            <LedgrIcon size={32} />
           </div>
         )}
 
         {isSidebarOpen && (
           <button
             onClick={toggleSidebar}
-            className="w-7 h-7 flex items-center justify-center rounded-lg text-[#6B6B68] hover:text-[#1A1A18] dark:hover:text-[#F0EFEC] hover:bg-[#F0EFEC] dark:hover:bg-[#2E2E2C] transition-all duration-100 hidden lg:flex"
+            className="w-7 h-7 hidden lg:flex items-center justify-center rounded-lg text-[#6B6B68] hover:text-[#1A1A18] dark:hover:text-[#F0EFEC] hover:bg-[#F0EFEC] dark:hover:bg-[#2E2E2C] transition-all duration-100"
           >
             <ChevronLeft size={16} />
           </button>
@@ -76,7 +104,6 @@ export default function Sidebar() {
               key={item.id}
               onClick={() => {
                 setActivePage(item.id);
-                // close sidebar on mobile after navigation
                 if (window.innerWidth < 1024) toggleSidebar();
               }}
               className={`w-full flex items-center gap-3.5 px-3.5 py-3 rounded-xl text-sm transition-all duration-100 group relative
