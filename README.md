@@ -29,7 +29,7 @@ A premium personal finance dashboard built for the Zorvyn FinTech Frontend Devel
 - **Insights** — Top category, savings rate, biggest expense, monthly comparison bar chart, category breakdown with progress bars, smart observation
 - **State Management** — Zustand with three stores: appStore (role, theme, navigation), transactionStore (CRUD, loading), filterStore (all filter state)
 
-### Optional Enhancements
+### Enhancements
 - **Dark / Light mode** — Full dark mode with warm neutral palette, persisted via localStorage
 - **Export CSV and JSON** — Downloads filtered transactions with proper formatting
 - **Mock API simulation** — `mockApi.js` wraps data with 700ms delay to simulate real network calls
@@ -132,5 +132,3 @@ Data is designed to feel real — odd amounts like ₹1,847, UPI-style descripti
 - AI responses depend on OpenAI API availability and credits
 
 ---
-
-*Built by Pragathi — April 2026*
