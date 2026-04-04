@@ -354,3 +354,5 @@ export default function Settings() {
     </div>
   );
 }
+
+<div className="space-y-5 max-w-full md:max-w-2xl"></div>

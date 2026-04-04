@@ -104,3 +104,9 @@ export default function TransactionTable() {
     </>
   );
 }
+
+<div className="overflow-x-auto">
+  <div className="min-w-[700px]">
+    <table className="w-full"></table>
+    </div>
+</div>

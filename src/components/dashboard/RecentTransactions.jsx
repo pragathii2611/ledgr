@@ -62,8 +62,16 @@ export default function RecentTransactions({ transactions, isLoading }) {
               ))
             )}
           </tbody>
+          
         </table>
       </div>
     </div>
   );
 }
+
+{/* table */}
+<div className="overflow-x-auto -mx-0">
+  <div className="min-w-[600px]">
+    <table className="w-full"></table>
+    </div>
+</div>

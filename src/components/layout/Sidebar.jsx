@@ -30,7 +30,7 @@ export default function Sidebar() {
       className="flex flex-col h-full bg-white dark:bg-[#242422] border-r border-[#EBEBE8] dark:border-[#2E2E2C] shrink-0 overflow-hidden"
     >
       {/* logo */}
-      <div className="flex items-center justify-between px-5 h-20 border-b border-[#EBEBE8] dark:border-[#2E2E2C]">
+      <div className="flex items-center justify-between px-5 h-16 md:h-20 border-b border-[#EBEBE8] dark:border-[#2E2E2C]">
         <AnimatePresence>
           {isSidebarOpen && (
             <motion.div
@@ -59,7 +59,7 @@ export default function Sidebar() {
         {isSidebarOpen && (
           <button
             onClick={toggleSidebar}
-            className="w-7 h-7 flex items-center justify-center rounded-lg text-[#6B6B68] hover:text-[#1A1A18] dark:hover:text-[#F0EFEC] hover:bg-[#F0EFEC] dark:hover:bg-[#2E2E2C] transition-all duration-100"
+            className="w-7 h-7 flex items-center justify-center rounded-lg text-[#6B6B68] hover:text-[#1A1A18] dark:hover:text-[#F0EFEC] hover:bg-[#F0EFEC] dark:hover:bg-[#2E2E2C] transition-all duration-100 hidden lg:flex"
           >
             <ChevronLeft size={16} />
           </button>
@@ -71,11 +71,14 @@ export default function Sidebar() {
         {navItems.map((item) => {
           const Icon = item.icon;
           const isActive = activePage === item.id;
-
           return (
             <button
               key={item.id}
-              onClick={() => setActivePage(item.id)}
+              onClick={() => {
+                setActivePage(item.id);
+                // close sidebar on mobile after navigation
+                if (window.innerWidth < 1024) toggleSidebar();
+              }}
               className={`w-full flex items-center gap-3.5 px-3.5 py-3 rounded-xl text-sm transition-all duration-100 group relative
                 ${isActive
                   ? "bg-[#EEF2FF] dark:bg-[#2E2C4E] text-[#4F46E5] font-medium"
@@ -84,7 +87,10 @@ export default function Sidebar() {
             >
               <Icon
                 size={19}
-                className={`shrink-0 ${isActive ? "text-[#4F46E5]" : "text-[#A8A8A5] group-hover:text-[#6B6B68]"}`}
+                className={`shrink-0 ${isActive
+                  ? "text-[#4F46E5]"
+                  : "text-[#A8A8A5] group-hover:text-[#6B6B68]"
+                }`}
               />
               <AnimatePresence>
                 {isSidebarOpen && (
@@ -146,7 +152,7 @@ export default function Sidebar() {
         ) : (
           <button
             onClick={toggleSidebar}
-            className="w-full flex items-center justify-center py-2.5 text-[#A8A8A5] hover:text-[#1A1A18] dark:hover:text-[#F0EFEC] transition-all"
+            className="w-full hidden lg:flex items-center justify-center py-2.5 text-[#A8A8A5] hover:text-[#1A1A18] dark:hover:text-[#F0EFEC] transition-all"
           >
             <ChevronRight size={16} />
           </button>

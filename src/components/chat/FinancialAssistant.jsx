@@ -204,8 +204,7 @@ export default function FinancialAssistant() {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => setIsOpen(true)}
-            className="fixed bottom-6 right-6 z-40 w-14 h-14 rounded-full bg-[#4F46E5] text-white shadow-modal flex items-center justify-center hover:bg-[#4338CA] transition-colors duration-150"
-          >
+className="fixed bottom-4 right-4 md:bottom-6 md:right-6 z-40 w-12 h-12 md:w-14 md:h-14 rounded-full bg-[#4F46E5] text-white shadow-modal flex items-center justify-center hover:bg-[#4338CA] transition-colors duration-150"          >
             <MessageCircle size={22} />
           </motion.button>
         )}
@@ -219,8 +218,7 @@ export default function FinancialAssistant() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
             transition={{ duration: 0.2, ease: "easeOut" }}
-            className="fixed bottom-6 right-6 z-50 w-96 h-[580px] bg-white dark:bg-[#242422] border border-[#EBEBE8] dark:border-[#2E2E2C] rounded-2xl shadow-modal flex flex-col overflow-hidden"
-          >
+className="fixed bottom-4 right-4 md:bottom-6 md:right-6 z-50 w-[calc(100vw-2rem)] md:w-96 h-[70vh] md:h-[580px] bg-white dark:bg-[#242422] border border-[#EBEBE8] dark:border-[#2E2E2C] rounded-2xl shadow-modal flex flex-col overflow-hidden"          >
             {/* header */}
             <div className="flex items-center justify-between px-5 py-4 border-b border-[#EBEBE8] dark:border-[#2E2E2C] shrink-0">
               <div className="flex items-center gap-3">

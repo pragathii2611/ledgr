@@ -14,22 +14,18 @@ export default function Dashboard() {
   }, []);
 
   return (
-    <div className="space-y-6">
-      {/* KPI Cards */}
+    <div className="space-y-5 md:space-y-6">
       <KPICards transactions={transactions} isLoading={isLoading} />
 
-      {/* Trend Chart — full width */}
       <TrendChart transactions={transactions} isLoading={isLoading} />
 
-      {/* Health Score + Category — side by side */}
       {transactions.length > 0 && (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 md:gap-6">
           <HealthScore transactions={transactions} isLoading={isLoading} />
           <CategoryChart transactions={transactions} isLoading={isLoading} />
         </div>
       )}
 
-      {/* Recent Transactions */}
       <RecentTransactions transactions={transactions} isLoading={isLoading} />
     </div>
   );
