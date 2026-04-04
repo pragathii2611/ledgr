@@ -20,21 +20,28 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
-  Cell,
 } from "recharts";
-import { TrendingUp, TrendingDown, Flame, PiggyBank, Wallet, ArrowUpCircle } from "lucide-react";
+import {
+  TrendingUp,
+  TrendingDown,
+  Flame,
+  PiggyBank,
+  Wallet,
+  ArrowUpCircle,
+} from "lucide-react";
 import { ChartSkeleton } from "../components/ui/Skeleton";
+import SpendingHeatmap from "../components/dashboard/SpendingHeatmap";
 
 function CustomTooltip({ active, payload, label }) {
   if (!active || !payload || !payload.length) return null;
   return (
-    <div className="bg-white dark:bg-[#18181B] border border-[#F0F0F0] dark:border-[#27272A] rounded-xl shadow-modal p-4 text-sm">
-      <p className="text-[#9CA3AF] mb-3 font-medium">{label}</p>
+    <div className="bg-white dark:bg-[#242422] border border-[#EBEBE8] dark:border-[#2E2E2C] rounded-xl shadow-modal p-4 text-sm">
+      <p className="text-[#A8A8A5] mb-3 font-medium">{label}</p>
       {payload.map((entry) => (
         <div key={entry.name} className="flex items-center gap-2 mb-1.5">
           <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: entry.fill }} />
-          <span className="text-[#6B7280] capitalize">{entry.name}:</span>
-          <span className="text-[#0A0A0A] dark:text-[#FAFAFA] font-semibold">
+          <span className="text-[#6B6B68] capitalize">{entry.name}:</span>
+          <span className="text-[#1A1A18] dark:text-[#F0EFEC] font-semibold">
             {formatCurrency(entry.value)}
           </span>
         </div>
@@ -45,23 +52,23 @@ function CustomTooltip({ active, payload, label }) {
 
 function InsightCard({ icon: Icon, label, value, sub, color }) {
   return (
-    <div className="bg-white dark:bg-[#18181B] border border-[#F0F0F0] dark:border-[#27272A] rounded-card shadow-card p-6 flex flex-col gap-4">
+    <div className="bg-white dark:bg-[#242422] border border-[#EBEBE8] dark:border-[#2E2E2C] rounded-card shadow-card p-6 flex flex-col gap-4">
       <div className="flex items-center justify-between">
-        <span className="text-sm text-[#9CA3AF] font-medium uppercase tracking-widest">
+        <span className="text-sm text-[#A8A8A5] font-medium uppercase tracking-widest">
           {label}
         </span>
         <div
           className="w-10 h-10 rounded-xl flex items-center justify-center"
-          style={{ backgroundColor: `${color}15` }}
+          style={{ backgroundColor: `${color}18` }}
         >
           <Icon size={18} style={{ color }} />
         </div>
       </div>
       <div>
-        <p className="text-2xl font-semibold text-[#0A0A0A] dark:text-[#FAFAFA] tracking-tight">
+        <p className="text-2xl font-semibold text-[#1A1A18] dark:text-[#F0EFEC] tracking-tight">
           {value}
         </p>
-        <p className="text-sm text-[#9CA3AF] mt-1">{sub}</p>
+        <p className="text-sm text-[#A8A8A5] mt-1">{sub}</p>
       </div>
     </div>
   );
@@ -91,11 +98,8 @@ export default function Insights() {
   const topCategory = getTopCategory(transactions);
   const biggestExpense = getBiggestExpense(transactions);
   const savingsRate = getSavingsRate(transactions);
-  const totalIncome = getTotalIncome(transactions);
-  const totalExpenses = getTotalExpenses(transactions);
   const netBalance = getNetBalance(transactions);
 
-  // observation text
   const observation = (() => {
     const rate = parseFloat(savingsRate);
     if (rate >= 50) return `Excellent work! You're saving ${savingsRate}% of your income — well above the recommended 20%. Keep it up.`;
@@ -121,7 +125,7 @@ export default function Insights() {
           label="Savings Rate"
           value={`${savingsRate}%`}
           sub={parseFloat(savingsRate) >= 20 ? "Above the 20% benchmark" : "Below the 20% benchmark"}
-          color="#6366F1"
+          color="#4F46E5"
         />
         <InsightCard
           icon={Wallet}
@@ -140,49 +144,50 @@ export default function Insights() {
       </div>
 
       {/* monthly bar chart */}
-      <div className="bg-white dark:bg-[#18181B] border border-[#F0F0F0] dark:border-[#27272A] rounded-card shadow-card p-6">
+      <div className="bg-white dark:bg-[#242422] border border-[#EBEBE8] dark:border-[#2E2E2C] rounded-card shadow-card p-6">
         <div className="flex items-center justify-between mb-8">
           <div>
-            <p className="text-base font-semibold text-[#0A0A0A] dark:text-[#FAFAFA]">
+            <p className="text-base font-semibold text-[#1A1A18] dark:text-[#F0EFEC]">
               Monthly Comparison
             </p>
-            <p className="text-sm text-[#9CA3AF] mt-1">
+            <p className="text-sm text-[#A8A8A5] mt-1">
               Income vs expenses per month
             </p>
           </div>
-          <div className="flex items-center gap-5 text-sm text-[#6B7280]">
+          <div className="flex items-center gap-5 text-sm text-[#6B6B68]">
             <div className="flex items-center gap-2">
-              <div className="w-3 h-3 rounded-full bg-[#22C55E]" />
+              <div className="w-3 h-3 rounded-full bg-[#4F46E5]" />
               Income
             </div>
             <div className="flex items-center gap-2">
-              <div className="w-3 h-3 rounded-full bg-[#EF4444]" />
+              <div className="w-3 h-3 rounded-full bg-[#DC2626]" />
               Expenses
             </div>
           </div>
         </div>
         <ResponsiveContainer width="100%" height={280}>
           <BarChart data={monthly} margin={{ top: 4, right: 4, left: 0, bottom: 0 }} barGap={6}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#F0F0F0" vertical={false} />
-            <XAxis dataKey="month" tick={{ fontSize: 13, fill: "#9CA3AF" }} axisLine={false} tickLine={false} />
-            <YAxis tick={{ fontSize: 13, fill: "#9CA3AF" }} axisLine={false} tickLine={false} tickFormatter={(v) => `₹${(v / 1000).toFixed(0)}K`} width={60} />
+            <CartesianGrid strokeDasharray="3 3" stroke="#EBEBE8" vertical={false} />
+            <XAxis dataKey="month" tick={{ fontSize: 13, fill: "#A8A8A5" }} axisLine={false} tickLine={false} />
+            <YAxis tick={{ fontSize: 13, fill: "#A8A8A5" }} axisLine={false} tickLine={false} tickFormatter={(v) => `₹${(v / 1000).toFixed(0)}K`} width={60} />
             <Tooltip content={<CustomTooltip />} />
-            <Bar dataKey="income" fill="#22C55E" radius={[6, 6, 0, 0]} opacity={0.85} />
-            <Bar dataKey="expenses" fill="#EF4444" radius={[6, 6, 0, 0]} opacity={0.85} />
+            <Bar dataKey="income" fill="#4F46E5" radius={[6, 6, 0, 0]} opacity={0.85} />
+            <Bar dataKey="expenses" fill="#DC2626" radius={[6, 6, 0, 0]} opacity={0.85} />
           </BarChart>
         </ResponsiveContainer>
       </div>
 
+      {/* spending heatmap */}
+      <SpendingHeatmap transactions={transactions} />
+
       {/* category breakdown + observation */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-
-        {/* category breakdown table */}
-        <div className="lg:col-span-2 bg-white dark:bg-[#18181B] border border-[#F0F0F0] dark:border-[#27272A] rounded-card shadow-card">
-          <div className="px-6 py-5 border-b border-[#F0F0F0] dark:border-[#27272A]">
-            <p className="text-base font-semibold text-[#0A0A0A] dark:text-[#FAFAFA]">
+        <div className="lg:col-span-2 bg-white dark:bg-[#242422] border border-[#EBEBE8] dark:border-[#2E2E2C] rounded-card shadow-card">
+          <div className="px-6 py-5 border-b border-[#EBEBE8] dark:border-[#2E2E2C]">
+            <p className="text-base font-semibold text-[#1A1A18] dark:text-[#F0EFEC]">
               Category Breakdown
             </p>
-            <p className="text-sm text-[#9CA3AF] mt-0.5">
+            <p className="text-sm text-[#A8A8A5] mt-0.5">
               Detailed spending by category
             </p>
           </div>
@@ -193,26 +198,25 @@ export default function Insights() {
                   <div className="flex items-center gap-2">
                     <div
                       className="w-2.5 h-2.5 rounded-full"
-                      style={{ backgroundColor: categoryColors[item.category] || "#9CA3AF" }}
+                      style={{ backgroundColor: categoryColors[item.category] || "#A8A8A5" }}
                     />
-                    <span className="text-sm text-[#0A0A0A] dark:text-[#FAFAFA] font-medium">
+                    <span className="text-sm text-[#1A1A18] dark:text-[#F0EFEC] font-medium">
                       {item.category}
                     </span>
                   </div>
                   <div className="flex items-center gap-4">
-                    <span className="text-sm text-[#9CA3AF]">{item.percentage}%</span>
-                    <span className="text-sm font-semibold font-mono text-[#0A0A0A] dark:text-[#FAFAFA]">
+                    <span className="text-sm text-[#A8A8A5]">{item.percentage}%</span>
+                    <span className="text-sm font-semibold font-mono text-[#1A1A18] dark:text-[#F0EFEC]">
                       {formatCurrency(item.amount)}
                     </span>
                   </div>
                 </div>
-                {/* progress bar */}
-                <div className="w-full h-1.5 bg-[#F4F4F5] dark:bg-[#27272A] rounded-full overflow-hidden">
+                <div className="w-full h-1.5 bg-[#F0EFEC] dark:bg-[#2E2E2C] rounded-full overflow-hidden">
                   <div
                     className="h-full rounded-full transition-all duration-500"
                     style={{
                       width: `${item.percentage}%`,
-                      backgroundColor: categoryColors[item.category] || "#9CA3AF",
+                      backgroundColor: categoryColors[item.category] || "#A8A8A5",
                     }}
                   />
                 </div>
@@ -221,22 +225,20 @@ export default function Insights() {
           </div>
         </div>
 
-        {/* observation card */}
+        {/* observation + monthly summaries */}
         <div className="space-y-4">
-          {/* ai observation */}
-          <div className="bg-white dark:bg-[#18181B] border border-[#F0F0F0] dark:border-[#27272A] rounded-card shadow-card p-6">
+          <div className="bg-white dark:bg-[#242422] border border-[#EBEBE8] dark:border-[#2E2E2C] rounded-card shadow-card p-6">
             <div className="flex items-center gap-2 mb-4">
-              <div className="w-2 h-2 rounded-full bg-[#6366F1] animate-pulse" />
-              <p className="text-sm font-semibold text-[#0A0A0A] dark:text-[#FAFAFA]">
+              <div className="w-2 h-2 rounded-full bg-[#4F46E5] animate-pulse" />
+              <p className="text-sm font-semibold text-[#1A1A18] dark:text-[#F0EFEC]">
                 Smart Observation
               </p>
             </div>
-            <p className="text-sm text-[#6B7280] dark:text-[#A1A1AA] leading-relaxed">
+            <p className="text-sm text-[#6B6B68] dark:text-[#8C8C88] leading-relaxed">
               {observation}
             </p>
           </div>
 
-          {/* monthly summary cards */}
           {monthly.map((m) => {
             const saved = m.income - m.expenses;
             const rate = m.income > 0 ? ((saved / m.income) * 100).toFixed(1) : 0;
@@ -244,18 +246,17 @@ export default function Insights() {
             return (
               <div
                 key={m.month}
-                className="bg-white dark:bg-[#18181B] border border-[#F0F0F0] dark:border-[#27272A] rounded-card shadow-card p-5"
+                className="bg-white dark:bg-[#242422] border border-[#EBEBE8] dark:border-[#2E2E2C] rounded-card shadow-card p-5"
               >
                 <div className="flex items-center justify-between mb-3">
-                  <p className="text-sm font-semibold text-[#0A0A0A] dark:text-[#FAFAFA]">
+                  <p className="text-sm font-semibold text-[#1A1A18] dark:text-[#F0EFEC]">
                     {m.month}
                   </p>
                   <div className="flex items-center gap-1">
-                    {isPositive ? (
-                      <TrendingUp size={14} className="text-[#16A34A]" />
-                    ) : (
-                      <TrendingDown size={14} className="text-[#DC2626]" />
-                    )}
+                    {isPositive
+                      ? <TrendingUp size={14} className="text-[#16A34A]" />
+                      : <TrendingDown size={14} className="text-[#DC2626]" />
+                    }
                     <span className={`text-sm font-medium ${isPositive ? "text-[#16A34A]" : "text-[#DC2626]"}`}>
                       {rate}% saved
                     </span>
@@ -263,13 +264,13 @@ export default function Insights() {
                 </div>
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <p className="text-xs text-[#9CA3AF] mb-1">Income</p>
+                    <p className="text-xs text-[#A8A8A5] mb-1">Income</p>
                     <p className="text-sm font-semibold font-mono text-[#16A34A]">
                       {formatCurrency(m.income)}
                     </p>
                   </div>
                   <div>
-                    <p className="text-xs text-[#9CA3AF] mb-1">Expenses</p>
+                    <p className="text-xs text-[#A8A8A5] mb-1">Expenses</p>
                     <p className="text-sm font-semibold font-mono text-[#DC2626]">
                       {formatCurrency(m.expenses)}
                     </p>
